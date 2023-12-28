@@ -62,14 +62,14 @@ public class Quizz extends JFrame {
         choices4.add("Riyadh");
         choices4.add("Madrid");
         choices4.add("Tunis");
-        questions.add(new Question("Je suis une ville sous le soleil brillant, On m'appelle <T> comme un éléphant. Au cœur de la Tunisie, des palais, des histoires sans fin, Devine ma capitale, tu seras malin !", choices4, "Tunis"));
+        questions.add(new Question("Je suis une ville sous le soleil brillant, On m'appelle 'T' comme un éléphant. Au cœur de la Tunisie, des palais, des histoires sans fin, Devine ma capitale, tu seras malin !", choices4, "Tunis"));
 
         List<String> choices5= new ArrayList<>();
         choices5.add("Brasilia");
         choices5.add("Accra");
         choices5.add("Séoul");
         choices5.add("Mexico");
-        questions.add(new Question("Je suis la capitale du Brésil, On m'appelle <B> et c'est génial. C'est là que le carnaval danse avec zèle, Quelle est ma ville,  peux-tu deviner?", choices5, "Brasilia"));
+        questions.add(new Question("Je suis la capitale du Brésil, On m'appelle 'B' et c'est génial. C'est là que le carnaval danse avec zèle, Quelle est ma ville,  peux-tu deviner?", choices5, "Brasilia"));
 
         // Initialize the eliminatedChoicesMap
         eliminatedChoicesMap = new HashMap<>();
@@ -289,5 +289,4 @@ public class Quizz extends JFrame {
         }
     }
 }
-
 
