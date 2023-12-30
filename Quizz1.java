@@ -1,13 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Quizz1 extends JFrame {
+
     private int score = 0;
     private int currentQuestionIndex = 0;
     private JLabel scoreLabel;
@@ -19,132 +18,319 @@ public class Quizz1 extends JFrame {
     private ButtonGroup group;
     private JButton nextButton;
     private JButton helpButton;
-
-    // Map to store eliminated choices for each question
     private Map<Question, List<String>> eliminatedChoicesMap;
-
     private List<Question> questions;
 
     public Quizz1() {
-        // Set up the JFrame
-        setTitle("Quiz Game");
+        setTitle("Quizz Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(1000, 1000);
         setLocationRelativeTo(null);
 
-        // Initialize questions list before adding questions
-        questions = new ArrayList<>();
+        initializeQuestions();
 
-        // Create questions
-        List<String> choices1 = new ArrayList<>();
-        choices1.add("Égyptien");
-        choices1.add("Italien");
-        choices1.add("Chinois");
-        choices1.add("Algerien");
-        questions.add(new Question("Je suis l'Algérie, pays si beau, Mes habitants, un nom rigolo. Court et doux, c'est facile à attraper, Peux-tu deviner comment on les appelle ?", choices1, "Algerien"));
-
-        List<String> choices2 = new ArrayList<>();
-        choices2.add("Russe");
-        choices2.add("Allemand");
-        choices2.add("Mexicain");
-        choices2.add("Portugais");
-        questions.add(new Question("Nous vivons en Europe, pays charmant, Notre langue est allemande, c'est amusant. Si tu cherches, notre nom est tout près, Ressemble à 'Al...'. Qui sommes-nous, tu sais ?", choices2, "Allemand"));
-
-        List<String> choices3 = new ArrayList<>();
-        choices3.add("Indien");
-        choices3.add("Afghan");
-        choices3.add("Portugais");
-        choices3.add("Suisse");
-        questions.add(new Question("Nous sommes d'un pays en Asie, Notre nom commence par 'I'. Dans nos saris et nos turbans, Qui sommes-nous, c'est amusant ?", choices3, "Indien"));
-
-        List<String> choices4 = new ArrayList<>();
-        choices4.add("Suédois");
-        choices4.add("Argentin");
-        choices4.add("Chinois");
-        choices4.add("Russe");
-        questions.add(new Question("Nous venons d'un pays où l'hiver est roi, La neige danse et recouvre tout de son manteau. Notre langue, russe, sonne comme un chant, De quel pays magique venons-nous, sais-tu maintenant ?", choices4, "Russe"));
-
-        List<String> choices5 = new ArrayList<>();
-        choices5.add("Irakien");
-        choices5.add("Mexicain");
-        choices5.add("Turc");
-        choices5.add("Marocain");
-        questions.add(new Question("Nous sommes d'un pays en Amérique, Avec des tacos et des chapeaux fantastiques. Notre nom commence par 'M', devine!!", choices5, "Mexicain"));
-
-        // Initialize the eliminatedChoicesMap
         eliminatedChoicesMap = new HashMap<>();
 
-        // Create components
-        scoreLabel = new JLabel("Score: 0");
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        questionLabel = new JLabel();
-        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        option1 = new JRadioButton();
-        option2 = new JRadioButton();
-        option3 = new JRadioButton();
-        option4 = new JRadioButton();
-        nextButton = new JButton("Next");
-        helpButton = new JButton("Help");
+        initComponents();
+        setupLayout();
+        updateUI();
 
-        // Group the radio buttons
+        setVisible(true);
+    }
+
+    private void initializeQuestions() {
+        questions = new ArrayList<>();
+
+        List<String> choices1 = List.of("Égyptien", "Italien", "Chinois", "Algerien");
+        questions.add(new Question("Je suis l'Algérie, pays si beau, Mes habitants, un nom rigolo. " +
+                "Court et doux, c'est facile à attraper, Peux-tu deviner comment on les appelle ?", choices1, "Algerien"));
+                List<String> choices2 = List.of("Russe", "Allemand", "Mexicain", "Portugais");
+                questions.add(new Question("Nous vivons en Europe, pays charmant, " +
+                        "Notre langue est allemande, c'est amusant. Si tu cherches, notre nom est tout près, " +
+                        "Ressemble à 'Al...'. Qui sommes-nous, tu sais ?", choices2, "Allemand"));
+        
+                List<String> choices3 = List.of("Indien", "Afghan", "Portugais", "Suisse");
+                questions.add(new Question("Nous sommes d'un pays en Asie, " +
+                        "Notre nom commence par 'I'. Dans nos saris et nos turbans, " +
+                        "Qui sommes-nous, c'est amusant ?", choices3, "Indien"));
+        
+                List<String> choices4 = List.of("Suédois", "Argentin", "Chinois", "Russe");
+                questions.add(new Question("Nous venons d'un pays où l'hiver est roi, " +
+                        "La neige danse et recouvre tout de son manteau. Notre langue, russe, " +
+                        "sonne comme un chant, De quel pays magique venons-nous, sais-tu maintenant ?", choices4, "Russe"));
+        
+                List<String> choices5 = List.of("Irakien", "Mexicain", "Turc", "Marocain");
+                questions.add(new Question("Nous sommes d'un pays en Amérique, " +
+                        "Avec des tacos et des chapeaux fantastiques. Notre nom commence par 'M', devine!!", choices5, "Mexicain"));
+    }
+
+    private void initComponents() {
+        scoreLabel = new JLabel("Your Score:");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
+       
+        questionLabel = new JLabel();
+        questionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        option1 = createStyledRadioButton();
+        option2 = createStyledRadioButton();
+        option3 = createStyledRadioButton();
+        option4 = createStyledRadioButton();
+
         group = new ButtonGroup();
         group.add(option1);
         group.add(option2);
         group.add(option3);
         group.add(option4);
 
-        // Add ActionListener to the next button
-        nextButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Check the selected answer
-                if (getCurrentQuestion().isCorrectAnswer(getSelectedAnswer())) {
-                    score++;
-                }
+        nextButton = new JButton("Next");
+        helpButton = new JButton("Help");
 
-                // Move to the next question or show the final score
-                currentQuestionIndex++;
-                if (currentQuestionIndex < questions.size()) {
-                    updateUI();
-                } else {
-                    showFinalScore();
-                }
-            }
-        });
+       // Add ActionListener to the next button
+    nextButton.addActionListener(e -> {
+    // Check if the user has selected an answer
+    if (getSelectedAnswer() == null) {
+        // Show a pop-up message if no answer is selected
+        JOptionPane.showMessageDialog(this, "Veuillez choisir une reponse, Merci✨.",
+                "Reponse Oblegatoire", JOptionPane.WARNING_MESSAGE);
+    } else {
+        // Check the selected answer
+        if (getCurrentQuestion().isCorrectAnswer(getSelectedAnswer())) {
+            score++;
+        }
 
-        // Add ActionListener to the help button
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                help();
-            }
-        });
+        // Move to the next question or show the final score
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            updateUI();
+        } else {
+            showFinalScore();
+        }
+    }
+});
+        helpButton.addActionListener(e -> help());
+    }
 
-        // Set up layout with padding
+    private JRadioButton createStyledRadioButton() {
+        JRadioButton radioButton = new JRadioButton();
+        radioButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        radioButton.setFocusPainted(false);
+        radioButton.setBorderPainted(false);
+        return radioButton;
+    }
+
+    private void setupLayout() {
         setLayout(new BorderLayout());
-        JPanel quizPanel = new JPanel();
-        quizPanel.setLayout(new GridLayout(6, 1, 10, 10)); // Increased rows for Help button
-        quizPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        quizPanel.add(scoreLabel);
-        quizPanel.add(questionLabel);
-        quizPanel.add(option1);
-        quizPanel.add(option2);
-        quizPanel.add(option3);
-        quizPanel.add(option4);
-        quizPanel.add(helpButton); // Added Help button
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        buttonPanel.add(nextButton);
-
+        JPanel quizPanel = createQuizPanel();
+        JPanel buttonPanel = createButtonPanel();
+        JPanel scorPanel = createScorePanel();
+        add(scorPanel,BorderLayout.NORTH);
         add(quizPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+    }
 
-        // Display the first question
-        updateUI();
+    private JPanel createQuizPanel() {
+        JPanel quizPanel = new JPanel();
+       
+        quizPanel.setLayout(new BoxLayout(quizPanel, BoxLayout.Y_AXIS));
+        quizPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 100, 20));
 
-        // Make the frame visible
-        setVisible(true);
+        quizPanel.setBackground(new Color(135, 206, 235));
+        // quizPanel.add(scoreLabel);
+    
+        quizPanel.add(questionLabel);
+        quizPanel.add(Box.createVerticalGlue());
+    
+        JPanel choicesPanel = createChoicesPanel();
+        quizPanel.add(choicesPanel);
+
+       
+
+        return quizPanel;
+    }
+
+    private JPanel createChoicesPanel() {
+        JPanel choicesPanel = new JPanel(new GridLayout(4, 1, 0, 5));
+        choicesPanel.setBackground(new Color(135, 206, 235));
+
+        styleChoice(option1, Color.BLACK);
+        styleChoice(option2, Color.BLACK);
+        styleChoice(option3, Color.BLACK);
+        styleChoice(option4, Color.BLACK);
+       
+        choicesPanel.add(option1);
+        choicesPanel.add(option2);
+        choicesPanel.add(option3);
+        choicesPanel.add(option4);
+
+        return choicesPanel;
+    }
+    private JPanel createScorePanel() {
+        JPanel scorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        scorePanel.setBackground(new Color(135, 206, 235));
+    
+        JLabel scoreTitleLabel = new JLabel("Your Score:");
+        scoreTitleLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        scoreTitleLabel.setForeground(Color.BLACK); // Set text color
+    
+        // // Use the existing scoreLabel instance variable
+        // scoreLabel = new JLabel( ""+score );
+        // scoreLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        // scoreLabel.setForeground(new Color(250, 116, 97)); // Set text color
+        // scoreLabel.setText("<html><div>" "</div></html>");
+
+        scorePanel.add(scoreTitleLabel);
+        scorePanel.add(scoreLabel);
+    
+        return scorePanel;
+    }
+    
+    
+    //-----------------------------------
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
+        buttonPanel.setBackground(new Color(135, 206, 235));
+    
+       
+        // Style the Help Button
+        styleButton(helpButton, "Help",new Color(254, 214, 206), Color.DARK_GRAY);
+     
+        // Style the Next Button
+        styleButton(nextButton, "Next", new Color(250, 116, 97), Color.WHITE);
+        buttonPanel.add(helpButton);
+        buttonPanel.add(nextButton);
+       
+        return buttonPanel;
+    }
+    
+    private void styleButton(JButton button, String text, Color backgroundColor, Color foregroundColor) {
+        button.setText(text);
+        button.setFont(new Font("Arial", Font.BOLD, 20));
+        button.setBackground(backgroundColor);
+        button.setForeground(foregroundColor);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        button.setFocusPainted(false); // Remove the focus border
+        button.setPreferredSize(new Dimension(150, 50));
+
+    }
+
+    private void styleChoice(JRadioButton choice, Color textColor) {
+        choice.setForeground(textColor);
+        choice.setFont(new Font("Arial",Font.BOLD, 25));
+        choice.setBackground( new Color(254, 214, 206)); 
+        choice.setBorder(BorderFactory.createLineBorder(new Color(254, 214, 206), 4)); // Subtle border
+        choice.setMargin(new Insets(10, 20, 50, 20)); // Add padding
+          }
+
+          private void StyleQuestion(JLabel questionLabel, Color textColor) {
+            questionLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+            questionLabel.setHorizontalAlignment(JLabel.CENTER); // Centre le texte horizontalement
+            questionLabel.setVerticalAlignment(JLabel.CENTER); // Centre le texte verticalement
+            questionLabel.setVerticalTextPosition(JLabel.CENTER); // Positionne le texte au centre verticalement
+            questionLabel.setHorizontalTextPosition(JLabel.CENTER); // Positionne le texte au centre horizontalement
+            questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Ajustez les marges ici
+        }
+        
+
+    private void updateUI() {
+        Question currentQuestion = getCurrentQuestion();
+        // Style the score label
+        scoreLabel.setText("<html><div style='color: rgb(250, 116, 97);font-weight:bold;text-align: center; font-size:30px;'>" +
+        "  " + score + "</div></html>");
+       
+        
+        questionLabel.setText("<html><div style='font-size: 16px; color: black; text-align: center;padding-right:150px; padding-top:40px;padding-left:50px;'>" +
+        "Question:<br/>" + currentQuestion.getQuestion() + "</div></html>");
+        StyleQuestion(questionLabel, Color.BLACK);
+        List<String> choices = currentQuestion.getChoices();
+        option1.setText(choices.get(0));
+        option2.setText(choices.get(1));
+        option3.setText(choices.get(2));
+        option4.setText(choices.get(3));
+
+        group.clearSelection();
+        enableAllOptions();
+        helpButton.setEnabled(true);
+    }
+
+    private void handleNextButtonClick() {
+        if (getCurrentQuestion().isCorrectAnswer(getSelectedAnswer())) {
+            score++;
+        }
+
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            updateUI();
+        } else {
+            showFinalScore();
+        }
+    }
+
+    private void showFinalScore() {
+        String message;
+        String title = "Fin du Quizz";
+
+        if (score >= 3) {
+            message = "<html><div style='text-align: center;'>" +
+                    "<p style='font-size: 25px; color: red;'> 🎉 Bravo le petit champion ! 🎉 </p>" +
+                    "<p style='font-size: 20px;'>Tu as réussi avec un super score de : " + score + " 🌟 <br/>" +
+                    "Continue comme ça, tu es incroyable !</p></div></html>";
+        } else {
+            message = "<html><div style='text-align: center;'>" +
+                    "<p style='font-size: 25px; color: black;'> Ne sois pas triste😢 , tu as fait de ton mieux! </p>" +
+                    "<br>" +
+                    "<p style='font-size: 20px;'>Continue d'apprendre et tu deviendras un champion 💪.<br/>" +
+                    "Ton score est : " + score + "</p></div></html>";
+        }
+
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+    private void help() {
+        Question currentQuestion = getCurrentQuestion();
+        List<String> choices = currentQuestion.getChoices();
+
+        if (!eliminatedChoicesMap.containsKey(currentQuestion)) {
+            eliminatedChoicesMap.put(currentQuestion, new ArrayList<>());
+        }
+
+        List<String> eliminatedChoices = eliminatedChoicesMap.get(currentQuestion);
+
+        String correctAnswer = currentQuestion.getCorrectAnswer();
+        List<String> remainingChoices = new ArrayList<>(choices);
+        remainingChoices.remove(correctAnswer);
+        remainingChoices.removeAll(eliminatedChoices);
+
+        for (int i = 0; i < 2; i++) {
+            if (!remainingChoices.isEmpty()) {
+                int randomIndex = (int) (Math.random() * remainingChoices.size());
+                String choiceToRemove = remainingChoices.remove(randomIndex);
+
+                if (choiceToRemove.equals(option1.getText())) {
+                    option1.setEnabled(false);
+                } else if (choiceToRemove.equals(option2.getText())) {
+                    option2.setEnabled(false);
+                } else if (choiceToRemove.equals(option3.getText())) {
+                    option3.setEnabled(false);
+                } else if (choiceToRemove.equals(option4.getText())) {
+                    option4.setEnabled(false);
+                }
+
+                eliminatedChoices.add(choiceToRemove);
+            }
+        }
+
+        helpButton.setEnabled(false);
+    }
+
+    private void enableAllOptions() {
+        option1.setEnabled(true);
+        option2.setEnabled(true);
+        option3.setEnabled(true);
+        option4.setEnabled(true);
     }
 
     private Question getCurrentQuestion() {
@@ -164,127 +350,35 @@ public class Quizz1 extends JFrame {
         return null;
     }
 
-    private void updateUI() {
-        Question currentQuestion = getCurrentQuestion();
-        scoreLabel.setText("Score: " + score);
-        questionLabel.setText("<html><div style='font-size: 16px; color: blue; text-align: center;'>" +
-                currentQuestion.getQuestion() + "</div></html>");
-        List<String> choices = currentQuestion.getChoices();
-        option1.setText(choices.get(0));
-        option2.setText(choices.get(1));
-        option3.setText(choices.get(2));
-        option4.setText(choices.get(3));
-        group.clearSelection();
-        enableAllOptions(); // Re-enable all options for the new question
-        helpButton.setEnabled(true); // Re-enable the Help button for the new question
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(Quizz1::new);
     }
 
-    private void showFinalScore() {
-        String message;
-        String title = "Fin du Quiz";
+    private static class Question {
+        private String question;
+        private List<String> choices;
+        private String correctAnswer;
 
-        if (score >= 3) {
-            message = "<html><div style='text-align: center;'>" +
-            "<p style='font-size: 25px; color: red;'> 🎉 Bravo le petit champion ! 🎉 </p>" +
-            "<p style='font-size: 20px;'>Tu as réussi avec un super score de : " + score + " 🌟 <br/>" +
-            "Continue comme ça, tu es incroyable !</p></div></html>";
-} else {
-    message = "<html><div style='text-align: center;'>" +
-            "<p style='font-size: 25px; color: black;'> Ne sois pas triste😢 , tu as fait de ton mieux! </p>" +
-            "<br>" +
-            "<p style='font-size: 20px;'>Continue d'apprendre et tu deviendras un champion 💪.<br/>" +
-            "Ton score est : " + score + "</p></div></html>";
-}
-
-JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
-System.exit(0);
-}
-
-private void help() {
-Question currentQuestion = getCurrentQuestion();
-List<String> choices = currentQuestion.getChoices();
-
-// Check if choices have been eliminated for the current question
-if (!eliminatedChoicesMap.containsKey(currentQuestion)) {
-    eliminatedChoicesMap.put(currentQuestion, new ArrayList<>());
-}
-
-List<String> eliminatedChoices = eliminatedChoicesMap.get(currentQuestion);
-
-// Identify the correct and remaining incorrect answers
-String correctAnswer = currentQuestion.getCorrectAnswer();
-List<String> remainingChoices = new ArrayList<>(choices);
-remainingChoices.remove(correctAnswer);
-remainingChoices.removeAll(eliminatedChoices);
-
-// Randomly select two incorrect choices to eliminate
-for (int i = 0; i < 2; i++) {
-    if (!remainingChoices.isEmpty()) {
-        int randomIndex = (int) (Math.random() * remainingChoices.size());
-        String choiceToRemove = remainingChoices.remove(randomIndex);
-
-        // Disable the corresponding radio button
-        if (choiceToRemove.equals(option1.getText())) {
-            option1.setEnabled(false);
-        } else if (choiceToRemove.equals(option2.getText())) {
-            option2.setEnabled(false);
-        } else if (choiceToRemove.equals(option3.getText())) {
-            option3.setEnabled(false);
-        } else if (choiceToRemove.equals(option4.getText())) {
-            option4.setEnabled(false);
+        public Question(String question, List<String> choices, String correctAnswer) {
+            this.question = question;
+            this.choices = choices;
+            this.correctAnswer = correctAnswer;
         }
 
-        // Add the eliminated choice to the list
-        eliminatedChoices.add(choiceToRemove);
+        public String getQuestion() {
+            return question;
+        }
+
+        public List<String> getChoices() {
+            return choices;
+        }
+
+        public String getCorrectAnswer() {
+            return correctAnswer;
+        }
+
+        public boolean isCorrectAnswer(String selectedAnswer) {
+            return correctAnswer.equals(selectedAnswer);
+        }
     }
-}
-
-// Disable the help button after using it
-helpButton.setEnabled(false);
-}
-
-private void enableAllOptions() {
-// Enable all radio buttons for the new question
-option1.setEnabled(true);
-option2.setEnabled(true);
-option3.setEnabled(true);
-option4.setEnabled(true);
-}
-
-public static void main(String[] args) {
-SwingUtilities.invokeLater(new Runnable() {
-    @Override
-    public void run() {
-        new Quizz1();
-    }
-});
-}
-
-private static class Question {
-private String question;
-private List<String> choices;
-private String correctAnswer;
-
-public Question(String question, List<String> choices, String correctAnswer) {
-    this.question = question;
-    this.choices = choices;
-    this.correctAnswer = correctAnswer;
-}
-
-public String getQuestion() {
-    return question;
-}
-
-public List<String> getChoices() {
-    return choices;
-}
-
-public String getCorrectAnswer() {
-    return correctAnswer;
-}
-
-public boolean isCorrectAnswer(String selectedAnswer) {
-    return correctAnswer.equals(selectedAnswer);
-}
-}
 }
