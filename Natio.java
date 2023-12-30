@@ -1,302 +1,204 @@
-
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Natio extends JFrame implements ActionListener {
+public class Natio extends JFrame {
+    private int score = 0;
+    private int currentQuestionIndex = 0;
+    private int remainingTime = 15; // Timer set to 15 seconds
+    private JLabel scoreLabel;
+    private JLabel questionLabel;
+    private JLabel timerLabel;
+    private JRadioButton option1, option2, option3, option4;
+    private ButtonGroup group;
+    private JButton nextButton;
+    private Timer timer;
+    private List<Question> questions;
 
-    String questions[][] = new String[10][5];
-    String answers[][] = new String[10][2];
-    String userans[][] = new String[10][1];
-    JLabel N, Q;
-    JRadioButton op1, op2, op3, op4;
-    ButtonGroup grpoptions;
+    public Natio() {
+        setTitle("Quiz Game");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
 
-    static int timer = 15;
-    static int ans_given = 0;
-    static int count = 0;
+        questions = new ArrayList<>();
+        initializeQuestions();
 
-    JButton next, ll, s;
+        scoreLabel = new JLabel("Score: 0");
+        questionLabel = new JLabel();
+        timerLabel = new JLabel("Time remaining: 15 seconds");
 
-    static int score = 0;
-    String name;
-
-    Natio(String name) {
-        this.name = name;
-        setBounds(50, 0, 1140, 700);
-        getContentPane().setBackground(Color.WHITE);
-        setLayout(null);
-
-        Icon img = new ImageIcon("C:\\Users\\HP\\OneDrive\\Images\\Saved Pictures\\quiz time.jpg");
-        JLabel image = new JLabel(img);
-        image.setBounds(0, 30, 1140, 250);
-        add(image);
-
-        // AFFICHER NUM QUESTION
-        N = new JLabel();
-        N.setBounds(100, 350, 50, 30);
-        N.setFont(new Font("", Font.BOLD, 15));
-        add(N);
-
-        // AFFICHER QUESTION
-        Q = new JLabel();
-        Q.setBounds(130, 350, 900, 30);
-        Q.setFont(new Font("", Font.BOLD, 20));
-        add(Q);
-
-        // LES QSTS ET REPS
-        questions[0][0] = "Quelle est la nationalité des habitants de l'Afrique du Sud?";
-        questions[0][1] = "Française";
-        questions[0][2] = "Sud-Africaine";
-        questions[0][3] = "Anglaise";
-        questions[0][4] = "Espagnole";
-
-        questions[1][0] = "Quelle est la nationalité des habitants des Pays-Bas ?";
-        questions[1][1] = "Néerlandaise";
-        questions[1][2] = "Japonaise";
-        questions[1][3] = "Américaine";
-        questions[1][4] = "Palestinienne";
-
-        questions[2][0] = "Quelle est la nationalité des habitants du Danemark ?";
-        questions[2][1] = "Allemande";
-        questions[2][2] = "Émiratie";
-        questions[2][3] = "Américaine";
-        questions[2][4] = "Danoise";
-
-        questions[3][0] = "Quelle est la nationalité des habitants des États-Unis ?";
-        questions[3][1] = "Brésilienne";
-        questions[3][2] = "Américaine";
-        questions[3][3] = "Colombienne";
-        questions[3][4] = "Saoudienne";
-
-        questions[4][0] = "Quelle est la nationalité des habitants de Madagascar ?";
-        questions[4][1] = "Turque";
-        questions[4][2] = "Italienne";
-        questions[4][3] = "Malgache";
-        questions[4][4] = "Anglaise";
-
-        
-       
-        
-        answers[0][1] = "Sud-Africaine";
-        answers[1][1] = "Néerlandaise";
-        answers[2][1] = "Danoise";
-        answers[3][1] = "Américaine";
-        answers[4][1] = "Malgache";
-        
-
-        // LES OPTIONS
-        op1 = new JRadioButton();
-        op1.setBounds(170, 400, 500, 30);
-        op1.setBackground(Color.WHITE);
-        op1.setFont(new Font("Dialog", Font.PLAIN, 20));
-        add(op1);
-
-        op2 = new JRadioButton();
-        op2.setBounds(170, 445, 500, 30);
-        op2.setBackground(Color.WHITE);
-        op2.setFont(new Font("Dialog", Font.PLAIN, 20));
-        add(op2);
-
-        op3 = new JRadioButton();
-        op3.setBounds(170, 485, 500, 30);
-        op3.setBackground(Color.WHITE);
-        op3.setFont(new Font("Dialog", Font.PLAIN, 20));
-        add(op3);
-
-        op4 = new JRadioButton();
-        op4.setBounds(170, 525, 500, 30);
-        op4.setBackground(Color.WHITE);
-        op4.setFont(new Font("Dialog", Font.PLAIN, 20));
-        add(op4);
-
-        // UNE SEULE ET UNIQUE REPONSE
-        grpoptions = new ButtonGroup();
-        grpoptions.add(op1);
-        grpoptions.add(op2);
-        grpoptions.add(op3);
-        grpoptions.add(op4);
-
-        next = new JButton("Next");
-        next.setBounds(800, 410, 200, 35);
-        next.setFont(new Font("", Font.PLAIN, 20));
-        next.setBackground(Color.green);
-        next.setForeground(Color.WHITE);
-        next.addActionListener(this);
-        add(next);
-
-        ll = new JButton("Lifeline");
-        ll.setBounds(800, 490, 200, 35);
-        ll.setFont(new Font("", Font.PLAIN, 20));
-        ll.setBackground(Color.green);
-        ll.setForeground(Color.WHITE);
-        ll.addActionListener(this);
-        add(ll);
-
-        s = new JButton("Submit");
-        s.setBounds(800, 570, 200, 35);
-        s.setFont(new Font("", Font.PLAIN, 20));
-        s.setBackground(Color.green);
-        s.setForeground(Color.WHITE);
-        s.addActionListener(this);
-        add(s);
-
-        start(count);
+        setUpUIComponents();
+        setUpLayout();
+        updateUI();
 
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == next) {
-            repaint();
-            // les options tjrs s'affichent mm apres appuyer next ou ll
-            op1.setEnabled(true);
-            op2.setEnabled(true);
-            op3.setEnabled(true);
-            op4.setEnabled(true);
-
-            // si appuyer sur next afficher prochaine question
-            ans_given = 1;
-            if (grpoptions.getSelection() == null) {
-                userans[count][0] = "";
-            } else {
-                userans[count][0] = grpoptions.getSelection().getActionCommand();
-            }
-
-            // quand on arrive a question10 on peut pas appuyer next puisque ya plus de
-            // questions
-            // 8 parceque on appuie 8fois pour arriver a la 10eme question
-            if (count == 4) {
-                next.setEnabled(false);
-                s.setEnabled(true);
-            }
-
-            count++;
-            start(count);
-
-        } else if (ae.getSource() == ll) {
-            // pour aider l'utilisateur juste dans les questions precisees avec les reponses
-            // precisees
-            if (count == 2 || count == 4 || count == 6 || count == 8 || count == 9) {
-                op2.setEnabled(false);
-                op3.setEnabled(false);
-            } else {
-                op1.setEnabled(false);
-                op4.setEnabled(false);
-            }
-            // utiliser une fois
-            ll.setEnabled(false);
-        } else if (ae.getSource() == s) {
-            ans_given = 1;
-            if (grpoptions.getSelection() == null) {
-                userans[count][0] = "";
-            } else {
-                userans[count][0] = grpoptions.getSelection().getActionCommand();
-            }
-
-            for (int i = 0; i < userans.length; i++) {
-                if (userans[i][0].equals(answers[i][1])) {
-                    score += 10;
-                } else {
-                    score += 0;
-                }
-            }
-            setVisible(false); // score
-            new Score(name, score);
-        }
+    private void initializeQuestions() {
+        questions.add(new Question("Comment appelle t on les habitants de l'affrique du sud ?", 
+            new String[]{"sudafricains", "allemands", "danois", "americains"}, "sudafricains"));
+        questions.add(new Question("Comment appelle t on les habitants du pays bas?", 
+            new String[]{"Espagnoles", "Turques", "Néerlandais", "Francais"}, "Néerlandais"));
+        questions.add(new Question("Comment appelle t on les habitants du Danemark?", 
+            new String[]{"Russes", "Danois", "Norvegiens", "Italiens"}, "Danois"));
+        questions.add(new Question("Comment appelle t on les habitants des etats unis ?", 
+            new String[]{"Arabes", "Anglais", "États-Uniens", "Americains"}, "États-Uniens"));
+        questions.add(new Question("Comment appelle t on les habitants de Madagascar?", 
+            new String[]{"Malaisiens", "Australiens", "Danois", "Malgaches,"}, "Malgaches"));
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);
+    private void setUpUIComponents() {
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        timerLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
-        String time = "Time Left: " + timer + "Seconds"; // 15
-        g.setColor(Color.RED);
-        g.setFont(new Font("", Font.BOLD, 17));
+        option1 = new JRadioButton();
+        option2 = new JRadioButton();
+        option3 = new JRadioButton();
+        option4 = new JRadioButton();
 
-        if (timer > 0) {
-            g.drawString(time, 813, 404);
+        group = new ButtonGroup();
+        group.add(option1);
+        group.add(option2);
+        group.add(option3);
+        group.add(option4);
+
+        nextButton = new JButton("Next");
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleNextButtonAction();
+            }
+        });
+    }
+
+    private void setUpLayout() {
+        setLayout(new BorderLayout());
+        JPanel quizPanel = new JPanel();
+        quizPanel.setLayout(new GridLayout(7, 1, 10, 10)); // Increased rows for timer and score
+        quizPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        quizPanel.add(scoreLabel);
+        quizPanel.add(questionLabel);
+        quizPanel.add(timerLabel);
+        quizPanel.add(option1);
+        quizPanel.add(option2);
+        quizPanel.add(option3);
+        quizPanel.add(option4);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(nextButton);
+
+        add(quizPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void updateUI() {
+        Question currentQuestion = getCurrentQuestion();
+        scoreLabel.setText("Score: " + score);
+        questionLabel.setText("<html><div style='text-align: center;'>" + currentQuestion.getQuestion() + "</div></html>");
+
+        String[] choices = currentQuestion.getChoices();
+        option1.setText(choices[0]);
+        option2.setText(choices[1]);
+        option3.setText(choices[2]);
+        option4.setText(choices[3]);
+
+        group.clearSelection();
+        startTimer();
+    }
+
+    private void handleNextButtonAction() {
+        if (getCurrentQuestion().isCorrectAnswer(getSelectedAnswer())) {
+            score++;
+        }
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            updateUI();
         } else {
-            g.drawString("Times UP!!", 813, 404);
-        }
-
-        timer--;
-
-        try {
-            Thread.sleep(1000);
-            repaint();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (ans_given == 1) {
-            ans_given = 0;
-            timer = 15;
-        } else if (timer < 0) {
-            timer = 15;
-            // apres appuyer ll tt les reponses s'affichent apres mykhlas lw9t snn yb9aw op1
-            // et 4 false
-            op1.setEnabled(true);
-            op2.setEnabled(true);
-            op3.setEnabled(true);
-            op4.setEnabled(true);
-
-            if (count == 8) {
-                next.setEnabled(false);
-                s.setEnabled(true);
-            }
-            if (count == 9) { // submit button
-                if (grpoptions.getSelection() == null) {
-                    userans[count][0] = "";
-                } else {
-                    userans[count][0] = grpoptions.getSelection().getActionCommand();
-                }
-
-                for (int i = 0; i < userans.length; i++) {
-                    if (userans[i][0].equals(answers[i][1])) {
-                        score += 10;
-                    } else {
-                        score += 0;
-                    }
-                }
-                setVisible(false);
-                new Score(name, score);
-            } else { // next button
-                // avoir les choix du user
-                if (grpoptions.getSelection() == null) {
-                    // si il n'a pas choisi et n'a pas repondu a la question
-                    userans[count][0] = "";
-                } else {
-                    userans[count][0] = grpoptions.getSelection().getActionCommand();
-                }
-                count++;
-                start(count);
-            }
+            showFinalScore();
         }
     }
 
-    public void start(int count) {
-        // incrementer le num de question
-        N.setText("" + (count + 1) + ". ");
-        // afficher la question correspendante au num
-        Q.setText(questions[count][0]);
-        // afficher les options
-        op1.setText(questions[count][1]);
-        op1.setActionCommand(questions[count][1]);
+    private void startTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+        remainingTime = 15; // Reset to 15 seconds for each question
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remainingTime--;
+                timerLabel.setText("Time remaining: " + remainingTime + " seconds");
+                if (remainingTime <= 0) {
+                    timer.stop();
+                    handleTimeOut();
+                }
+            }
+        });
+        timer.start();
+    }
 
-        op2.setText(questions[count][2]);
-        op2.setActionCommand(questions[count][2]);
+    private void handleTimeOut() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            updateUI();
+        } else {
+            showFinalScore();
+        }
+    }
 
-        op3.setText(questions[count][3]);
-        op3.setActionCommand(questions[count][3]);
+    private void showFinalScore() {
+        String message = score >= 3 ? "Great job! Your score: " + score : "Try again! Your score: " + score;
+        JOptionPane.showMessageDialog(this, message);
+        System.exit(0);
+    }
 
-        op4.setText(questions[count][4]);
-        op4.setActionCommand(questions[count][4]);
+    private Question getCurrentQuestion() {
+        return questions.get(currentQuestionIndex);
+    }
 
-        // ne pas afficher le choix precedent
-        grpoptions.clearSelection();
+    private String getSelectedAnswer() {
+        return option1.isSelected() ? option1.getText() :
+               option2.isSelected() ? option2.getText() :
+               option3.isSelected() ? option3.getText() :
+               option4.isSelected() ? option4.getText() : null;
     }
 
     public static void main(String[] args) {
-        new Natio("user");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Natio();
+            }
+        });
+    }
+
+    private static class Question {
+        private String question;
+        private String[] choices;
+        private String correctAnswer;
+
+        public Question(String question, String[] choices, String correctAnswer) {
+            this.question = question;
+            this.choices = choices;
+            this.correctAnswer = correctAnswer;
+        }
+
+        public String getQuestion() {
+            return question;
+        }
+
+        public String[] getChoices() {
+            return choices;
+        }
+
+        public boolean isCorrectAnswer(String selectedAnswer) {
+            return correctAnswer.equals(selectedAnswer);
+        }
     }
 }
