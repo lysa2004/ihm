@@ -13,6 +13,7 @@ public class Flagez extends JFrame {
     private int currentQuestionIndex = 0;
     private JLabel scoreLabel;
     private JLabel questionLabel;
+    private JLabel ImageIcon;
     private JRadioButton option1;
     private JRadioButton option2;
     private JRadioButton option3;
@@ -48,11 +49,11 @@ public class Flagez extends JFrame {
         return new ImageIcon(resizedImage);
     }
     
-    ImageIcon resizedFlagAlgeria = getResizedFlagImage("Flag_of_Algeria.png", 20, 20);
-    ImageIcon resizedFlagCanada = getResizedFlagImage("Flag_of_Canada.png", 20, 20);
-    ImageIcon resizedFlagSpain = getResizedFlagImage("Flag_of_Spain.png", 20, 20);
-    ImageIcon resizedFlagBrezil = getResizedFlagImage("Flag_of_Brezil.png", 20, 20);
-    ImageIcon resizedFlagKsa = getResizedFlagImage("Flag-Saudi-Arabia.png", 20, 20);
+    ImageIcon resizedFlagAlgeria = getResizedFlagImage("Flag_of_Algeria.png", 5, 5);
+    ImageIcon resizedFlagCanada = getResizedFlagImage("Flag_of_Canada.png", 5, 5);
+    ImageIcon resizedFlagSpain = getResizedFlagImage("Flag_of_Spain.png", 5, 5);
+    ImageIcon resizedFlagBrezil = getResizedFlagImage("Flag_of_Brezil.png", 5, 5);
+    ImageIcon resizedFlagKsa = getResizedFlagImage("Flag-Saudi-Arabia.png", 5, 5);
     
 
     private void initializeFlagQuestions() {
@@ -60,8 +61,8 @@ public class Flagez extends JFrame {
         questions = new ArrayList<>();
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Algeria.png", "Algerie", "Arabia Saoudite", "Espagne", "Bresil"));
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag-Saudi-Arabia.png", "Arabia Saoudite", "Allemagne", "Mexique", "Portugal"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Spain.png", "Espangne", "Indien", "Afghan", "Portugal"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Brezil.png", "Bresil", "Arabia Saoudit", "Chinois", "Russie"));
+        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Spain.png", "Espangne", "chine", "Afghan", "Portugal"));
+        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Brezil.png", "Bresil", "Arabia Saoudit", "Chine", "Russie"));
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Canada.png", "Canada", "Irak", "Mexique", "Maroc"));
 
     }
@@ -70,23 +71,24 @@ public class Flagez extends JFrame {
     private void initComponents() {
         scoreLabel = new JLabel("Your Score:");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
-
+    
         questionLabel = new JLabel();
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        ImageIcon = new JLabel(); // Instantiate ImageIcon
         option1 = createStyledRadioButton();
         option2 = createStyledRadioButton();
         option3 = createStyledRadioButton();
         option4 = createStyledRadioButton();
-
+    
         group = new ButtonGroup();
         group.add(option1);
         group.add(option2);
         group.add(option3);
         group.add(option4);
-
+    
         nextButton = createStyledButton("Next");
         helpButton = createStyledButton("Help");
-
+    
         nextButton.addActionListener(e -> handleNextButtonClick());
         helpButton.addActionListener(e -> help());
     }
@@ -127,7 +129,7 @@ public class Flagez extends JFrame {
 
         quizPanel.add(questionLabel);
         quizPanel.add(Box.createVerticalGlue());
-
+        quizPanel.add(ImageIcon);
         JPanel choicesPanel = createChoicesPanel();
         quizPanel.add(choicesPanel);
 
