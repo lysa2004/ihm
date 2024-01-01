@@ -61,8 +61,8 @@ public class Flagez extends JFrame {
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Algeria.png", "Algerie", "Arabia Saoudite", "Espagne", "Bresil"));
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag-Saudi-Arabia.png", "Arabia Saoudite", "Allemagne", "Mexique", "Portugal"));
         questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Spain.png", "Espangne", "Indien", "Afghan", "Portugal"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Brezil.png", "Bresil", "Suédois", "Chinois", "Russe"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Canada.png", "Canada", "Irakien", "Mexicain", "Marocain"));
+        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Brezil.png", "Bresil", "Arabia Saoudit", "Chinois", "Russie"));
+        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Canada.png", "Canada", "Irak", "Mexique", "Maroc"));
 
     }
 
