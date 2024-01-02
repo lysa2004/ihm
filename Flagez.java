@@ -7,32 +7,96 @@ import java.util.List;
 import java.util.Map;
 
 public class Flagez extends JFrame {
-    private static final String IMAGE_PATH = "C:\\Users\\DELL\\Desktop\\flag\\"; // Chemin des images
 
     private int score = 0;
     private int currentQuestionIndex = 0;
     private JLabel scoreLabel;
     private JLabel questionLabel;
-    private JLabel ImageIcon;
     private JRadioButton option1;
     private JRadioButton option2;
     private JRadioButton option3;
     private JRadioButton option4;
+    private JLabel flagLabel;
     private ButtonGroup group;
     private JButton nextButton;
     private JButton helpButton;
-    private Map<FlagQuestion, List<String>> eliminatedChoicesMap;
-    private List<FlagQuestion> questions;
+    private Map<Question, List<String>> eliminatedChoicesMap;
+    private List<Question> questions;
 
     public Flagez() {
+        //set up the JFrame
         setTitle("Quizz Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000);
         setLocationRelativeTo(null);
 
-        initializeFlagQuestions();
+        // Initialize questions list before adding questions
+         questions = new ArrayList<>();
+  
+     // Create questions
+         List<String> choices1 = new ArrayList<>();
+            choices1.add("Algerie");
+            choices1.add("Arabia Saoudite");
+            choices1.add("Espagne");
+            choices1.add("Bresil");
+        
+           questions.add(new Question( "a quel pays appartient ce drapeau ?", choices1,"Algerie", "Flag_of_Algeria.png"));
+        
+            List<String> choices2 = new ArrayList<>();
+            choices2.add("Arabia Saoudite");
+            choices2.add("Allemagne");
+            choices2.add("Mexique");
+            choices2.add("Portugal");
+        
+            questions.add(new Question( "a quel pays appartient ce drapeau ?",choices2, "Arabia Saoudite", "Flag-Saudi-Arabia.png"));
+        
+            List<String> choices3 = new ArrayList<>();
+            choices3.add("Espangne");
+            choices3.add("Chine");
+            choices3.add("Afghan");
+            choices3.add("Portugal");
+        
+           questions.add(new Question( "a quel pays appartient ce drapeau ?", choices3,"Espangne", "Flag_of_Spain.png"));
+        
+            List<String> choices4 = new ArrayList<>();
+            choices4.add("Bresil");
+            choices4.add("Arabia Saoudit");
+            choices4.add("Chine");
+            choices4.add("Russie");
+        
+            questions.add(new Question( "a quel pays appartient ce drapeau ?",choices4, "Bresil", "Flag_of_Brezil.png"));
+        
+            List<String> choices5 = new ArrayList<>();
+            choices5.add("Canada");
+            choices5.add("Irak");
+            choices5.add("Mexique");
+            choices5.add("tunis");
+        
+            questions.add(new Question( "a quel pays appartient ce drapeau ?", choices5,"Canada", "Flag_of_Canada.png"));
+    
 
+         // Create components
+        scoreLabel = new JLabel("Score: 0");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        questionLabel = new JLabel();
+        questionLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        flagLabel = new JLabel();
+        flagLabel.setPreferredSize(new Dimension(16, 8)); // Set the preferred size for the flag image
         eliminatedChoicesMap = new HashMap<>();
+        option1 = new JRadioButton();
+        option2 = new JRadioButton();
+        option3 = new JRadioButton();
+        option4 = new JRadioButton();
+        
+        nextButton = new JButton("Next");
+        helpButton = new JButton("Help");
+        // Group the radio buttons
+        group = new ButtonGroup();
+        group.add(option1);
+        group.add(option2);
+        group.add(option3);
+        group.add(option4);
+
 
         initComponents();
         setupLayout();
@@ -40,32 +104,7 @@ public class Flagez extends JFrame {
 
         setVisible(true);
     }
-    public ImageIcon getResizedFlagImage(String flagImagePath, int width, int height) {
-        String fullPath = IMAGE_PATH + flagImagePath;
-        ImageIcon originalIcon = new ImageIcon(fullPath);
-        Image originalImage = originalIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        
-        return new ImageIcon(resizedImage);
-    }
-    
-    ImageIcon resizedFlagAlgeria = getResizedFlagImage("Flag_of_Algeria.png", 5, 5);
-    ImageIcon resizedFlagCanada = getResizedFlagImage("Flag_of_Canada.png", 5, 5);
-    ImageIcon resizedFlagSpain = getResizedFlagImage("Flag_of_Spain.png", 5, 5);
-    ImageIcon resizedFlagBrezil = getResizedFlagImage("Flag_of_Brezil.png", 5, 5);
-    ImageIcon resizedFlagKsa = getResizedFlagImage("Flag-Saudi-Arabia.png", 5, 5);
-    
 
-    private void initializeFlagQuestions() {
-
-        questions = new ArrayList<>();
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Algeria.png", "Algerie", "Arabia Saoudite", "Espagne", "Bresil"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag-Saudi-Arabia.png", "Arabia Saoudite", "Allemagne", "Mexique", "Portugal"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Spain.png", "Espangne", "chine", "Afghan", "Portugal"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Brezil.png", "Bresil", "Arabia Saoudit", "Chine", "Russie"));
-        questions.add(new FlagQuestion("Quel pays correspond à ce drapeau  ?", "C:\\Users\\DELL\\Desktop\\flag\\Flag_of_Canada.png", "Canada", "Irak", "Mexique", "Maroc"));
-
-    }
 
 
     private void initComponents() {
@@ -74,7 +113,7 @@ public class Flagez extends JFrame {
     
         questionLabel = new JLabel();
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        ImageIcon = new JLabel(); // Instantiate ImageIcon
+      
         option1 = createStyledRadioButton();
         option2 = createStyledRadioButton();
         option3 = createStyledRadioButton();
@@ -129,7 +168,7 @@ public class Flagez extends JFrame {
 
         quizPanel.add(questionLabel);
         quizPanel.add(Box.createVerticalGlue());
-        quizPanel.add(ImageIcon);
+        quizPanel.add(flagLabel);
         JPanel choicesPanel = createChoicesPanel();
         quizPanel.add(choicesPanel);
 
@@ -198,16 +237,30 @@ public class Flagez extends JFrame {
   
     
     private void updateUI() {
-        FlagQuestion currentQuestion = getCurrentFlagQuestion();
+
+        Question currentQuestion = getCurrentQuestion();
         scoreLabel.setText("<html><div style='color: rgb(250, 116, 97);font-weight:bold;text-align: center; font-size:30px;'>" +
                 "  " + score + "</div></html>");
 
         questionLabel.setText("<html><div style='font-size: 16px; color: black; text-align: center;padding-right:150px; padding-top:40px;padding-left:50px;'>" +
                 "Question:<br/>" + currentQuestion.getQuestion() + "</div></html>");
+            // Load the image using the specified file name
+            String imagePath = "C:\\Users\\DELL\\Desktop\\ihm\\flagEZ" + currentQuestion.getFlagImagePath();
+            ImageIcon originalIcon = new ImageIcon(imagePath);
 
-      
-        ImageIcon flagIcon = getResizedFlagImage(currentQuestion.getFlagImagePath(), 100, 100); // Adjust width and height as needed
-        questionLabel.setIcon(flagIcon);
+            // Resize the image to fit the preferred size
+            Image resizedImage = originalIcon.getImage().getScaledInstance(150, 80, Image.SCALE_SMOOTH);
+
+            // Create a new ImageIcon with the resized image
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+            // Set the resized icon to the flagLabel
+            flagLabel.setIcon(resizedIcon);
+
+            flagLabel.setHorizontalAlignment(JLabel.CENTER); 
+
+
+
                 
         List<String> choices = currentQuestion.getChoices();
         option1.setText(choices.get(0));
@@ -221,7 +274,7 @@ public class Flagez extends JFrame {
     }
 
     private void handleNextButtonClick() {
-        if (getCurrentFlagQuestion().isCorrectAnswer(getSelectedAnswer())) {
+        if (getCurrentQuestion().isCorrectAnswer(getSelectedAnswer())) {
             score++;
         }
 
@@ -255,7 +308,7 @@ public class Flagez extends JFrame {
     }
 
     private void help() {
-        FlagQuestion currentQuestion = getCurrentFlagQuestion();
+       Question currentQuestion = getCurrentQuestion();
         List<String> choices = currentQuestion.getChoices();
 
         if (!eliminatedChoicesMap.containsKey(currentQuestion)) {
@@ -298,7 +351,7 @@ public class Flagez extends JFrame {
         option4.setEnabled(true);
     }
 
-    private FlagQuestion getCurrentFlagQuestion() {
+    private Question getCurrentQuestion() {
         return questions.get(currentQuestionIndex);
     }
 
@@ -316,27 +369,31 @@ public class Flagez extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Flagez flagez = new Flagez();
-            flagez.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+             public void run() {
+                new Flagez();
+            }
         });
     }
 
     private static class Question {
+
         private String question;
         private List<String> choices;
         private String correctAnswer;
+        private String flagImagePath;
 
-        public Question(String question, List<String> choices, String correctAnswer) {
+        public Question(String question, List<String> choices, String correctAnswer,String flagImagePath) {
             this.question = question;
             this.choices = choices;
             this.correctAnswer = correctAnswer;
+            this.flagImagePath = flagImagePath;
         }
 
         public String getQuestion() {
             return question;
         }
-
         public List<String> getChoices() {
             return choices;
         }
@@ -348,27 +405,9 @@ public class Flagez extends JFrame {
         public boolean isCorrectAnswer(String selectedAnswer) {
             return correctAnswer.equals(selectedAnswer);
         }
-    }
 
-    private static class FlagQuestion extends Question {
-        private String flagImagePath;
-
-        public FlagQuestion(String question, String flagImagePath, String correctAnswer, String... choices) {
-            super(question, createChoicesList(correctAnswer, choices), correctAnswer);
-            this.flagImagePath = IMAGE_PATH + flagImagePath;
-        }
-
-        public String getFlagImagePath() {
+        public String getFlagImagePath() {  // Add this method
             return flagImagePath;
         }
-
-        private static List<String> createChoicesList(String correctAnswer, String... choices) {
-            List<String> choicesList = new ArrayList<>();
-            choicesList.add(correctAnswer);
-            for (String choice : choices) {
-                choicesList.add(choice);
-            }
-            return choicesList;
-        }
     }
-}
+    }
