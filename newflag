@@ -85,6 +85,12 @@ public class FlagQuiz extends JFrame {
         option2 = new JRadioButton();
 
         nextButton = new JButton("Next");
+        nextButton.setFont(new Font("Arial", Font.BOLD, 20));
+        nextButton.setForeground(Color.WHITE); // Set the text color to white
+        nextButton.setBackground(new Color(250, 116, 97));
+        nextButton.setPreferredSize(new Dimension(150, 50));
+        nextButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        nextButton.setFocusPainted(false);
 
         // Group the radio buttons
         group = new ButtonGroup();
