@@ -195,7 +195,7 @@ public class FlagQuiz extends JFrame {
     private void updateUI() {
         Question currentQuestion = getCurrentQuestion();
         scoreLabel.setText("Score: " + score);
-        questionLabel.setText("<html><div style='font-size: 16px; color: blue; text-align: center;'>" +
+        questionLabel.setText("<html><div style='font-size: 16px; color: black; text-align: center;'>" +
                 currentQuestion.getQuestion() + "</div></html>");
         // Set the color of the question label to black
          questionLabel.setForeground(Color.BLACK);
