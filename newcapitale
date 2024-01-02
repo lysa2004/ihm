@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Capitale extends JFrame {
+public class Langue extends JFrame {
     private int score = 0;
     private int currentQuestionIndex = 0;
     private int remainingTime = 15; // Timer set to 15 seconds
@@ -18,7 +18,7 @@ public class Capitale extends JFrame {
     private Timer timer;
     private List<Question> questions;
 
-    public Capitale() {
+    public Langue() {
         setTitle("Quiz Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 1000);
@@ -39,23 +39,24 @@ public class Capitale extends JFrame {
     }
 
     private void initializeQuestions() {
-    questions.clear();
-
-    questions.add(new Question("Quelle est la capitale du Canada ?", 
-        new String[]{"Ottawa", "Toronto", "Vancouver", "Montréal"}, "Ottawa"));
-
-    questions.add(new Question("Quelle est la capitale de la Turquie ?", 
-        new String[]{ "Istanbul", "Izmir", "Bursa","Ankara"}, "Ankara"));
-
-    questions.add(new Question("Quelle est la capitale de la Chine ?", 
-        new String[]{"Shanghai","Pekin",  "Hong Kong", "Guangzhou"}, "Pekin"));
-
-    questions.add(new Question("Quelle est la capitale du Japon ?", 
-        new String[]{"Osaka", "Kyoto","Tokyo",  "Sapporo"}, "Tokyo"));
-
-    questions.add(new Question("Quelle est la capitale de l'Arabie Saoudite ?", 
-        new String[]{"Riyad", "Jeddah", "La Mecque", "Medina"}, "Riyad"));
-}
+        questions.clear();
+    
+        questions.add(new Question("Quelle est la langue officielle au Brésil ?", 
+            new String[]{"Portugais", "Espagnol", "Français", "Anglais"}, "Portugais"));
+    
+        questions.add(new Question("Quelle est la langue officielle au Mexique ?", 
+            new String[]{"Espagnol", "Portugais", "Anglais", "Français"}, "Espagnol"));
+    
+        questions.add(new Question("Quelle est la langue officielle au Pakistan ?", 
+            new String[]{"Ourdou", "Arabe", "Persan", "Pashto"}, "Ourdou"));
+    
+        questions.add(new Question("Quelle est la langue officielle au Kazakhstan ?", 
+            new String[]{"Kazakh", "Russe", "Ouzbek", "Turkmène"}, "Kazakh"));
+    
+        questions.add(new Question("Quelle est la langue officielle en Éthiopie ?", 
+            new String[]{"Amharique", "Somali", "Oromo", "Tigrinya"}, "Amharique"));
+    }
+    
 
 
     private void setUpUIComponents() {
@@ -86,8 +87,8 @@ public class Capitale extends JFrame {
         styleChoice(option2, getForeground());
         styleChoice(option3, getForeground());
         styleChoice(option4, getForeground());
-
     }
+
     private JRadioButton createStyledRadioButton() {
         JRadioButton radioButton = new JRadioButton();
         radioButton.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -95,6 +96,7 @@ public class Capitale extends JFrame {
         radioButton.setBorderPainted(false);
         return radioButton;
     }
+
     private void setUpLayout() {
         setLayout(new BorderLayout());
         JPanel quizPanel = new JPanel();
@@ -114,7 +116,6 @@ public class Capitale extends JFrame {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         buttonPanel.setBackground(new Color(135, 206, 235));
         buttonPanel.add(nextButton);
-
 
         add(quizPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -162,6 +163,7 @@ public class Capitale extends JFrame {
             questionLabel.setHorizontalTextPosition(JLabel.CENTER); // Positionne le texte au centre horizontalement
             questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Ajustez les marges ici
         }    
+
 
     private void updateUI() {
         Question currentQuestion = getCurrentQuestion();
@@ -246,7 +248,7 @@ public class Capitale extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Capitale();
+                new Langue();
             }
         });
     }
