@@ -167,6 +167,13 @@ public class Capitale extends JFrame {
         Question currentQuestion = getCurrentQuestion();
         scoreLabel.setText("Score: " + score);
         questionLabel.setText("<html><div style='text-align: center;'>" + currentQuestion.getQuestion() + "</div></html>");
+        questionLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+            questionLabel.setHorizontalAlignment(JLabel.CENTER); // Centre le texte horizontalement
+            questionLabel.setVerticalAlignment(JLabel.CENTER); // Centre le texte verticalement
+            questionLabel.setVerticalTextPosition(JLabel.CENTER); // Positionne le texte au centre verticalement
+            questionLabel.setHorizontalTextPosition(JLabel.CENTER); // Positionne le texte au centre horizontalement
+            questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Ajustez les marges ici
 
         String[] choices = currentQuestion.getChoices();
         option1.setText(choices[0]);
