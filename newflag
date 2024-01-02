@@ -40,9 +40,9 @@ public class FlagQuiz extends JFrame {
         // Create questions
         List<String> choices1 = new ArrayList<>();
         choices1.add("turquie");
-        choices1.add("tunis");
+        choices1.add("tunisie");
 
-        questions.add(new Question("a quel pays appartient ce drapeau ?", choices1, "tunis", "tunis.png"));
+        questions.add(new Question("a quel pays appartient ce drapeau ?", choices1, "tunisie", "tunis.png"));
 
         List<String> choices2 = new ArrayList<>();
         choices2.add("senegal");
@@ -64,9 +64,9 @@ public class FlagQuiz extends JFrame {
 
         List<String> choices5 = new ArrayList<>();
         choices5.add("croatie");
-        choices5.add("pays bas");
+        choices5.add("pays-bas");
 
-        questions.add(new Question("a quel pays appartient ce drapeau ?", choices5, "pays bas","pays-bas.png"));
+        questions.add(new Question("a quel pays appartient ce drapeau ?", choices5, "pays-bas","pays-bas.png"));
 
         // Initialize the eliminatedChoicesMap
         eliminatedChoicesMap = new HashMap<>();
@@ -86,6 +86,8 @@ public class FlagQuiz extends JFrame {
 
         option1.setBackground(new Color(254, 214, 206));
         option2.setBackground(new Color(254, 214, 206));
+        option1.setFont(new Font("Arial",Font.BOLD, 25));
+        option2.setFont(new Font("Arial",Font.BOLD, 25));
 
         nextButton = new JButton("Next");
         nextButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -139,6 +141,7 @@ public class FlagQuiz extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         buttonPanel.add(nextButton);
+        buttonPanel.setBackground(new Color(135, 206, 235));
     
 
         add(quizPanel, BorderLayout.CENTER);
@@ -194,6 +197,17 @@ public class FlagQuiz extends JFrame {
         scoreLabel.setText("Score: " + score);
         questionLabel.setText("<html><div style='font-size: 16px; color: blue; text-align: center;'>" +
                 currentQuestion.getQuestion() + "</div></html>");
+        // Set the color of the question label to black
+         questionLabel.setForeground(Color.BLACK);
+         questionLabel.setFont(new Font("Arial", Font.BOLD, 20));
+         
+
+            questionLabel.setHorizontalAlignment(JLabel.CENTER); // Centre le texte horizontalement
+            questionLabel.setVerticalAlignment(JLabel.CENTER); // Centre le texte verticalement
+            questionLabel.setVerticalTextPosition(JLabel.CENTER); // Positionne le texte au centre verticalement
+            questionLabel.setHorizontalTextPosition(JLabel.CENTER); // Positionne le texte au centre horizontalement
+            questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Ajustez les marges ici
+
 
         // Load the image using the specified file name
         String imagePath = "C:\\Users\\DELL\\Desktop\\flags\\" + currentQuestion.getFlagFileName();
@@ -207,6 +221,10 @@ public class FlagQuiz extends JFrame {
     
     // Set the resized icon to the flagLabel
         flagLabel.setIcon(resizedIcon);
+
+        flagLabel.setHorizontalAlignment(JLabel.CENTER); 
+          
+            
 
         option1.setText(currentQuestion.getChoices().get(0));
         option2.setText(currentQuestion.getChoices().get(1));
